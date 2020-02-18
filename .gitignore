@@ -1,0 +1,8 @@
+# Go
+bin
+
+# Terraform
+.terraform
+*.zip
+*.tfstate
+*.tfstate.backup
