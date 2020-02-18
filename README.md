@@ -1,4 +1,4 @@
-# Terraform - cw sns to slack Lambda
+# Terraform module - cw sns to slack Lambda
 
 
 ## Testing

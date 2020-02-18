@@ -23,6 +23,12 @@ resource "aws_lambda_function" "lambda" {
   source_code_hash = "${data.archive_file.lambda.output_base64sha256}"
   role             = "${aws_iam_role.lambda_exec_role.arn}"
   timeout          = 30
+
+  environment {
+    variables = {
+      WEBHOOK_URL = var.slack_webhook_url
+    }
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "policy_attachment" {
