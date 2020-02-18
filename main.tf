@@ -1,6 +1,6 @@
 resource "null_resource" "build_lambda" {
   provisioner "local-exec" {
-    command = "make build"
+    command = "cd ${path.module} && make build"
   }
 
   triggers = {
@@ -11,15 +11,15 @@ resource "null_resource" "build_lambda" {
 data "archive_file" "lambda" {
   depends_on  = [null_resource.build_lambda]
   type        = "zip"
-  source_dir  = "./bin/"
-  output_path = "./cloudwatch-sns-to-slack.zip"
+  source_dir  = "${path.module}/bin/"
+  output_path = "${path.module}/cloudwatch-sns-to-slack.zip"
 }
 
 resource "aws_lambda_function" "lambda" {
   function_name    = "cloudwatch-sns-to-slack"
   handler          = "cloudwatch-sns-to-slack"
   runtime          = "go1.x"
-  filename         = "cloudwatch-sns-to-slack.zip"
+  filename         = "${path.module}/cloudwatch-sns-to-slack.zip"
   source_code_hash = "${data.archive_file.lambda.output_base64sha256}"
   role             = "${aws_iam_role.lambda_exec_role.arn}"
   timeout          = 30
