@@ -1,0 +1,31 @@
+{
+    "Records": [
+        {
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:eu-central-1:123456789123:test:7695b387-0af5-4da2-926c-f3bf59fe6965",
+            "EventSource": "aws:sns",
+            "Sns": {
+                "SignatureVersion": "1",
+                "Timestamp": "2020-02-14T12:30:33.353Z",
+                "Signature": "CeTx/LkjzkbKA+JY9Dr6euzPUYAK9mxnpaNKEYocTa3lDQOdR3Zrl/ZhkgvgWifPbp/uMJyKIfPP2l5iioOe4+iJtrGLm8lioszZDF0EGeHb3sd4dDWM98wqLzOhuJxrI7s1PwgdN/3xtumuVJe6kgzDLdk+SWCVhwEg3x4TAiVGO9hcV2Q20AKKvERo8ZSpBJYBfQ5NnE+3nqtrP/8Pdo0eQt1o8fCu18DdDP0/60O2QSvR42B6Wcj25JkuzWBq2FIZgEShTdOSoXUI0Rx4TEVWm9KfJbHk5jBBc/NhHe+r/NW90Fl7DFdpP0T1A2DcyCrngZEN3n62HVZGC/Uc5A==",
+                "SigningCertUrl": "https://sns.eu-central-1.amazonaws.com/SimpleNotificationService-a86cb10b4e1f29c941702d737128f7b6.pem",
+                "MessageId": "c3644b16-2bf5-5c6d-b608-1dd6bedc720b",
+                "Message": "{\"AlarmName\":\"lambda-test\",\"AlarmDescription\":null,\"AWSAccountId\":\"123456789123\",\"NewStateValue\":\"OK\",\"NewStateReason\":\"Threshold Crossed: 1 out of the last 1 datapoints [0.5 (14/02/20 12:29:00)] was lower than the threshold (0.0) (minimum 1 datapoint for ALARM -> OK transition).\",\"StateChangeTime\":\"2020-02-14T12:30:33.310+0000\",\"Region\":\"EU (Frankfurt)\",\"OldStateValue\":\"ALARM\",\"Trigger\":{\"MetricName\":\"NumberOfMessagesSent\",\"Namespace\":\"AWS/SQS\",\"StatisticType\":\"Statistic\",\"Statistic\":\"AVERAGE\",\"Unit\":null,\"Dimensions\":[{\"value\":\"tb5-dlq-qa\",\"name\":\"QueueName\"}],\"Period\":60,\"EvaluationPeriods\":1,\"ComparisonOperator\":\"GreaterThanThreshold\",\"Threshold\":0.0,\"TreatMissingData\":\"- TreatMissingData:                    notBreaching\",\"EvaluateLowSampleCountPercentile\":\"\"}}",
+                "MessageAttributes": {
+                    "Test": {
+                        "Type": "",
+                        "Value": ""
+                    },
+                    "TestBinary": {
+                        "Type": "",
+                        "Value": ""
+                    }
+                },
+                "Type": "Notification",
+                "UnsubscribeUrl": "https://sns.eu-central-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-central-1:123456789123:test:7695b387-0af5-4da2-926c-f3bf59fe6965",
+                "TopicArn": "arn:aws:sns:eu-central-1:123456789123:test",
+                "Subject": "OK: \"lambda-test\" in EU (Frankfurt)"
+            }
+        }
+    ]
+}
