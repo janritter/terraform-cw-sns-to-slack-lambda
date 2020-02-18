@@ -38,7 +38,7 @@ func HandleRequest(ctx context.Context, event Event) (string, error) {
 		color = "good"
 	}
 
-	text := message.NewStateValue + " - " + message.AlarmName
+	text := message.NewStateValue + " - " + message.AlarmName + " - " + message.Region
 
 	description := "not set"
 
