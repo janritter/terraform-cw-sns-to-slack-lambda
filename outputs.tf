@@ -3,8 +3,8 @@ output "lambda_arn" {
 }
 
 output "lambda_function_name" {
-  value      = aws_lambda_function.lambda.function_name
-  depends_on = "Name of the function"
+  value       = aws_lambda_function.lambda.function_name
+  description = "Name of the function"
 }
 
 output "iam_role_arn" {
