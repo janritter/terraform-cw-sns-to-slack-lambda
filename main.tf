@@ -4,7 +4,7 @@ resource "null_resource" "build_lambda" {
   }
 
   triggers = {
-    always_run = "${timestamp()}"
+    always_run = timestamp()
   }
 }
 
@@ -20,8 +20,8 @@ resource "aws_lambda_function" "lambda" {
   handler          = "cloudwatch-sns-to-slack"
   runtime          = "go1.x"
   filename         = "${path.module}/cloudwatch-sns-to-slack.zip"
-  source_code_hash = "${data.archive_file.lambda.output_base64sha256}"
-  role             = "${aws_iam_role.lambda_exec_role.arn}"
+  source_code_hash = data.archive_file.lambda.output_base64sha256
+  role             = aws_iam_role.lambda_exec_role.arn
   timeout          = 30
 
   environment {
@@ -29,17 +29,27 @@ resource "aws_lambda_function" "lambda" {
       WEBHOOK_URL = var.slack_webhook_url
     }
   }
+
+  tags = var.tags
+}
+
+resource "aws_cloudwatch_log_group" "lambda" {
+  name              = "/aws/lambda/${aws_lambda_function.lambda.function_name}"
+  retention_in_days = 14
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "policy_attachment" {
-  role       = "${aws_iam_role.lambda_exec_role.name}"
-  policy_arn = "${aws_iam_policy.lambda_execution.arn}"
+  role       = aws_iam_role.lambda_exec_role.name
+  policy_arn = aws_iam_policy.lambda_execution.arn
 }
 
 resource "aws_iam_role" "lambda_exec_role" {
-  name = "cloudwatch-sns-to-slack"
+  name               = "cloudwatch-sns-to-slack"
+  assume_role_policy = data.aws_iam_policy_document.instance-assume-role-policy.json
 
-  assume_role_policy = "${data.aws_iam_policy_document.instance-assume-role-policy.json}"
+  tags = var.tags
 }
 
 data "aws_iam_policy_document" "instance-assume-role-policy" {
@@ -56,20 +66,19 @@ data "aws_iam_policy_document" "instance-assume-role-policy" {
 }
 
 resource "aws_iam_policy" "lambda_execution" {
-  policy = <<POLICY
-{
-   "Version": "2012-10-17",
-   "Statement": [
-       {
-           "Effect": "Allow",
-           "Action": [
-           "logs:CreateLogGroup",
-           "logs:CreateLogStream",
-           "logs:PutLogEvents"
-           ],
-           "Resource": "*"
-       }
-   ]
+  policy = data.aws_iam_policy_document.lambda_logging.json
 }
-POLICY
+
+data "aws_iam_policy_document" "lambda_logging" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+
+    resources = ["${aws_cloudwatch_log_group.lambda.arn}:*"]
+  }
 }
